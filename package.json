@@ -32,6 +32,7 @@
     "@babel/runtime": "^7.10.5",
     "canvas-sketch": "^0.7.3",
     "canvas-sketch-cli": "^1.11.9",
+    "glslCanvas": "^0.1.7",
     "load-asset": "^1.2.0",
     "nice-color-palettes": "^3.0.0",
     "p5": "^1.1.9",

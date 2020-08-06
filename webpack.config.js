@@ -19,9 +19,9 @@ module.exports = {
       filename: "index.html",
       template: "./src/index.html",
     }),
-    // new CopyPlugin({
-    //   patterns: [{ from: "./src/assets/images", to: "assets/images" }],
-    // }),
+    new CopyPlugin({
+      patterns: [{ from: "./src/assets/images", to: "assets/images" }],
+    }),
   ],
   resolve: {
     modules: [path.resolve(__dirname, "./src"), "node_modules"],
