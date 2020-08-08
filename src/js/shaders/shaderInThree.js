@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import { vertexshader, fragmentshader } from "./illusionFlowerShader";
+import { vertexshader, fragmentshader } from "./waterDropEffectShader.glsl";
 
 let testTexture = new THREE.TextureLoader().load(
   "../../assets/images/testImg.png"
@@ -21,12 +21,23 @@ export const shaderInThree = () => {
     );
     camera.position.set(0, 0, 10);
     scene.add(camera);
+    //renderer
+    renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(window.devicePixelRatio);
+    document.body.appendChild(renderer.domElement);
     //geometry and material
     let geometry = new THREE.BoxBufferGeometry(3, 3, 2);
     let plane = new THREE.PlaneBufferGeometry(5, 5, 32);
     uniforms = {
       u_time: { type: "f", value: 1.0 },
-      u_resolution: { type: "v2", value: new THREE.Vector2() },
+      u_resolution: {
+        type: "v2",
+        value: new THREE.Vector2(
+          renderer.domElement.width,
+          renderer.domElement.height
+        ),
+      },
       u_mouse: { type: "v2", value: new THREE.Vector2() },
       u_texture: { type: "t", value: testTexture },
     };
@@ -42,11 +53,6 @@ export const shaderInThree = () => {
     mesh = new THREE.Mesh(plane, material);
     scene.add(cube);
     scene.add(mesh);
-    //renderer
-    renderer = new THREE.WebGLRenderer({ antialias: true });
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setPixelRatio(window.devicePixelRatio);
-    document.body.appendChild(renderer.domElement);
 
     window.addEventListener("resize", onWindowResize, false);
     document.onmousemove = function (e) {
