@@ -4,7 +4,6 @@ const vertexshader = `
 attribute vec3 aPosition;
 attribute vec2 aTexCoord;
 
-// lets get texcoords just for fun! 
 varying vec2 oTexCoord;
 
 void main() {
@@ -27,22 +26,20 @@ precision mediump float;
 
 // lets grab texcoords just for fun
 varying vec2 oTexCoord;
+uniform vec2 u_resolution;
 uniform float u_time;
 uniform sampler2D u_texture;
 
 
 void main() {
-  vec2 uv = vec2(oTexCoord.x, 1.0-oTexCoord.y);
-
-  //uv.y *= -uv.y;
-  float intensity = 1.0;
-
+  vec2 uv = gl_FragCoord.xy/u_resolution;
+  uv = vec2(uv.x, 1.0-uv.y);
+  // vec2 uv = vec2(oTexCoord.x, 1.0-oTexCoord.y);
+  float intensity = 1.2;
 	uv.y += ((cos((uv.y + (u_time * 0.06)) * 45.0) * 0.003) +
-		(cos((uv.y + (u_time * 0.1)) * 10.0) * 0.005))*intensity;
-
-
-	uv.x += ((sin((uv.y + (u_time * 0.07)) * 15.0) * 0.004) +
-		(sin((uv.y + (u_time * 0.1)) * 15.0) * 0.002))*intensity;
+		(cos((uv.y + (u_time * 0.08)) * 10.0) * 0.005))*intensity;
+	uv.x += ((sin((uv.y + (u_time * 0.07)) * 35.0) * 0.004) +
+		(sin((uv.y + (u_time * 0.1)) * 18.0) * 0.002))*intensity;
 
 	vec4 texColor = texture2D(u_texture,uv);
 	gl_FragColor = texColor;

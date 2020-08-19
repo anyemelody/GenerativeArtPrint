@@ -1,6 +1,6 @@
 import canvasSketch from "canvas-sketch";
 import p5 from "p5";
-// import SingleLine from "./singleLine.js";
+import { setBackgroundGradient } from "./gradientBackground";
 import SingleLine from "./singleLineGraphic";
 import {
   vertexshader,
@@ -25,11 +25,15 @@ let shortlines = [];
 let longTotalLine = 6;
 let longlines = [];
 
-let waterShader, liveFrame;
+let waterShader, bufferAShader, liveFrame;
+let mouseZ = -1;
 
 const sketch = () => {
   liveFrame = createGraphics(1024, 1024, WEBGL);
-  liveFrame.background(255);
+  loadImage("../../assets/images/ricePaperBG.png", (img) => {
+    liveFrame.image(img, -512, -512);
+  });
+  // setBackgroundGradient(1024, 1024, liveFrame);
   for (let i = 0; i < shortTotalLine; i++) {
     let ratio = i / shortTotalLine;
     let startPos = liveFrame.createVector(
@@ -54,7 +58,7 @@ const sketch = () => {
     );
     let length = liveFrame.random(450, 800);
     let weight = liveFrame.random(15, 32);
-    let iniRotate = liveFrame.random(-0.3, -0.6) * PI;
+    let iniRotate = liveFrame.random(-0.3, -0.6) * liveFrame.PI;
     longlines[i] = new SingleLine(
       iniRotate,
       startPos,
@@ -65,13 +69,22 @@ const sketch = () => {
   }
   //define shader
   waterShader = createShader(vertexshader, fragmentshader);
+  // bufferAShader = createShader(vertexAshader, fragmentAshader);
+
+  document.addEventListener("mousedown", () => {
+    mouseZ = 1.0;
+    console.log("click" + mouseZ);
+  });
+
+  document.addEventListener("mouseup", () => {
+    mouseZ = -1.0;
+    console.log("click" + mouseZ);
+  });
 
   return ({ context, width, height }) => {
     liveFrame.push();
-
     liveFrame.translate(0, 400); //width / 2, height * 0.9
 
-    //one line
     if (shortlines.length > 0) {
       for (let i = shortlines.length - 1; i >= 0; i--) {
         if (!shortlines[i].stop) {
@@ -92,10 +105,13 @@ const sketch = () => {
       }
     }
     liveFrame.pop();
+
     //water effect shader
     shader(waterShader);
     waterShader.setUniform("u_time", frameCount * 0.01);
     waterShader.setUniform("u_texture", liveFrame);
+    waterShader.setUniform("u_resolution", [1024, 1024]);
+    // image(liveFrame, -512, -512);
     // loadImage("../../assets/images/testImg.png", (img) => {
     //   waterShader.setUniform("u_texture", img);
     //   //image(img, -512, -512);

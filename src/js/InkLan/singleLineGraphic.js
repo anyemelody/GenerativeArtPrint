@@ -47,10 +47,11 @@ class SingleLine {
       graphic.noise(this.deltastrokeNoise),
       0,
       1,
-      10,
-      50
+      150,
+      250
     );
-    graphic.stroke(0, strokeAlpha);
+    // graphic.colorMode(RGB, 255, 255, 255, 100);
+    graphic.stroke(8, strokeAlpha);
 
     graphic.strokeWeight(
       graphic.map(this.lineStep / this.totalStep, 0, 1, this.strokeWeight, 0.1)
