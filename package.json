@@ -36,6 +36,6 @@
     "load-asset": "^1.2.0",
     "nice-color-palettes": "^3.0.0",
     "p5": "^1.1.9",
-    "three": "^0.118.3"
+    "three": "^0.125.0"
   }
 }
